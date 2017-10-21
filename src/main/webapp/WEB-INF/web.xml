@@ -24,7 +24,7 @@
         <!-- Register resources and providers -->
         <init-param>
             <param-name>jersey.config.server.provider.packages</param-name>
-            <param-value>io.swagger.jaxrs.listing;com.tintri.tmi.mystic.api</param-value>
+            <param-value>com.intuit.vivek.rest</param-value>
         </init-param>
         <load-on-startup>2</load-on-startup>
     </servlet>

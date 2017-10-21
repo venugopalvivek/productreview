@@ -12,6 +12,12 @@ import java.util.List;
 public interface ProductDao extends CrudRepository<ProductEntity, Integer> {
 
     @Query("select p from ProductEntity p where p.totalScore = ?1")
-    List<ProductEntity> findAllByScore(int score);
+    List<ProductEntity> findAllByScore(double score);
+
+    @Query("select p from ProductEntity p where p.totalScore >= ?1 and p.totalScore <= ?2")
+    List<ProductEntity> findAllByScore(double bottomScore, double topScore);
+
+    @Query("select p from ProductEntity p")
+    List<ProductEntity> findAll();
 
 }

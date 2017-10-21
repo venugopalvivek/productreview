@@ -18,7 +18,7 @@ public class ProductEntity {
     private String name;
 
     @Column(name = "total_score")
-    private int totalScore;
+    private double totalScore;
 
     @Column(name = "reviews_count")
     private int reviewsCount;
@@ -39,11 +39,11 @@ public class ProductEntity {
         this.name = name;
     }
 
-    public int getTotalScore() {
+    public double getTotalScore() {
         return totalScore;
     }
 
-    public void setTotalScore(int totalScore) {
+    public void setTotalScore(double totalScore) {
         this.totalScore = totalScore;
     }
 
