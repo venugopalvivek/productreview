@@ -26,4 +26,7 @@ public interface ReviewDao extends CrudRepository<ReviewEntity, Integer> {
     @Query("select r from ReviewEntity r where r.state = :state order by r.createdAt")
     List<ReviewEntity> findByStateTopN(@Param("state") ReviewState state, Pageable pageable);
 
+    @Query("select r from ReviewEntity r where r.productId = :productId r.reviewerEmail = :email")
+    ReviewEntity findByProductIdAndEmail(@Param("productId") int productId, @Param("email") String email);
+
 }

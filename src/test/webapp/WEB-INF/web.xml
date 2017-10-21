@@ -8,13 +8,13 @@
     <!-- loading Spring Context for registering beans with ApplicationContext -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:applicationContext.xml</param-value>
+        <param-value>WEB-INF/applicationContext-test.xml</param-value>
     </context-param>
 
     <!-- log4j.properties location -->
     <context-param>
         <param-name>log4jConfigLocation</param-name>
-        <param-value>classpath:log4j.properties</param-value>
+        <param-value>WEB-INF/log4j-test.properties</param-value>
     </context-param>
 
     <!-- Jersey Servlet -->

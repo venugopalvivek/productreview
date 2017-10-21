@@ -77,6 +77,10 @@ public class ProductService {
     @Transactional
     public ReviewEntity createProductReview(int id, PostReviewDto postReviewDto) throws ProductReviewException {
         if (getProduct(id) != null) {
+            ReviewEntity existingReview = reviewDao.findByProductIdAndEmail(id, postReviewDto.getReviewerEmail());
+            if (existingReview != null) {
+                throw new ProductReviewException(409, "A review from same reviewer already exists");
+            }
             ReviewEntity entity = ReviewEntity.toEntity(id, postReviewDto);
             ReviewEntity savedEntity = reviewDao.save(entity);
             return savedEntity;
