@@ -26,7 +26,6 @@ public class ProductResource {
 
     @Autowired
     public void setService(ProductService service) {
-        System.out.println("Setting product service");
         this.service = service;
     }
 

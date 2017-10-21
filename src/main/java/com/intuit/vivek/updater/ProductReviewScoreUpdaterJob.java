@@ -26,7 +26,6 @@ public class ProductReviewScoreUpdaterJob {
 
     @PostConstruct
     public void init() {
-        System.out.println("Post construct");
         this.executorService = Executors.newSingleThreadExecutor();
         UpdaterJob updaterJob = new UpdaterJob(updater);
         executorService.execute(updaterJob);
