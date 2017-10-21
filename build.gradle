@@ -1,14 +1,79 @@
 group 'com.intuit.vivek'
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
-
-sourceCompatibility = 1.5
+description = """Basic Product Review"""
 
 repositories {
     mavenCentral()
 }
 
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+war {
+    baseName = 'productreview'
+
+}
+
+ext {
+    jerseyVersion = '2.22.2'
+    jacksonVersion = '2.9.1'
+    springVersion = '5.0.0.RELEASE'
+    slf4jVersion = '1.7.13' // this version cannot be changed as it will bring in log4j-over-slf4j dependency
+}
+
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    // spring dependency
+    compile "org.springframework:spring-web:$springVersion"
+    compile "org.springframework:spring-beans:$springVersion"
+
+    // spring data jpa
+    compile 'org.springframework.data:spring-data-jpa:1.11.8.RELEASE'
+
+// jackson - required for converting pojo to json
+    compile "org.glassfish.jersey.media:jersey-media-multipart:$jerseyVersion"
+    compile "com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion"
+    compile 'net.minidev:json-smart:2.2'
+
+    // jersey spring (to support spring dependency injection)
+    compile("org.glassfish.jersey.ext:jersey-spring3:$jerseyVersion") {
+        exclude(module: 'spring-core')
+        exclude(module: 'spring-web')
+        exclude(module: 'spring-beans')
+    }
+
+    // flyway for database versioning
+    compile 'org.flywaydb:flyway-core:4.0.3'
+    // mysql datasource
+    compile 'mysql:mysql-connector-java:5.1.38'
+    // hibernate provider
+//    compile 'org.hibernate:hibernate-core:4.3.11.Final'
+    compile 'org.hibernate:hibernate-entitymanager:4.3.11.Final'
+
+    // apache commons (StringUtils etc)
+    compile 'org.apache.commons:commons-lang3:3.4'
+
+    // javax servlet api
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile "org.springframework:spring-test:$springVersion"
+    testCompile 'org.mockito:mockito-all:1.9.5-rc1'
+    testCompile 'org.mockito:mockito-core:1.9.5-rc1'
+    // database for testing
+    testCompile 'com.h2database:h2:1.4.192'
+    testCompile 'com.frejo:force-rest-api:0.0.28'
+}
+
+// Create the task that runs the integration tests found from the
+// configured source directory and uses the correct classpath.
+jettyRun {
+    httpPort = 8080
+    stopPort = 8082
+    stopKey = "stopKey"
+    contextPath = "productreview"
 }
