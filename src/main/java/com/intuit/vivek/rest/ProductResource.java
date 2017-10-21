@@ -1,8 +1,11 @@
 package com.intuit.vivek.rest;
 
 import com.intuit.vivek.exceptions.ProductReviewException;
-import com.intuit.vivek.persistence.dao.ProductDao;
 import com.intuit.vivek.persistence.model.ProductEntity;
+import com.intuit.vivek.persistence.model.ReviewEntity;
+import com.intuit.vivek.rest.dto.PostReviewDto;
+import com.intuit.vivek.rest.dto.ReviewDto;
+import com.intuit.vivek.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,35 +22,54 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class ProductResource {
 
+    private ProductService service;
+
     @Autowired
-    private ProductDao productDao;
+    public void setService(ProductService service) {
+        System.out.println("Setting product service");
+        this.service = service;
+    }
 
     @GET
-    @Path("/")
     public Response getAllProducts(@QueryParam("score") Integer totalScore) throws ProductReviewException {
         List<ProductEntity> products = null;
         if (totalScore != null) {
-            products = productDao.findAll();
+            products = service.getProducts(totalScore);
         } else {
-            if (totalScore < 1 || totalScore > 5) {
-                throw new ProductReviewException(400, "Invalid score");
-            }
-            double bottomScore = totalScore * 1.0;
-            double topScore = (totalScore + 1) * 1.0;
-            topScore = topScore - 0.1;
-            products = productDao.findAllByScore(bottomScore, topScore);
+           products = service.getProducts();
         }
         return Response.status(Response.Status.OK).entity(products).build();
     }
 
     @GET
-    @Path(("/{id}"))
+    @Path("/{id}")
     public Response getProduct(@PathParam("id") int id) throws ProductReviewException {
-        ProductEntity product = productDao.findOne(id);
-        if (product != null) {
-            throw new ProductReviewException(400, "Product Not Found");
-        }
+        ProductEntity product = service.getProduct(id);
         return Response.status(Response.Status.OK).entity(product).build();
+    }
+
+    @GET
+    @Path("/{id}/reviews")
+    public Response getProductReviews(@PathParam("id") int id,
+                                      @QueryParam("score") Integer score)
+            throws ProductReviewException {
+        List<ReviewDto> reviews = null;
+        if (score != null) {
+            reviews = service.getProductReviews(id, score);
+        } else {
+            reviews = service.getProductReviews(id);
+        }
+        return Response.status(Response.Status.OK).entity(reviews).build();
+    }
+
+    @POST
+    @Path("/{id}/reviews")
+    public Response postProductReview(@PathParam("id") int id, PostReviewDto review) throws ProductReviewException {
+        ReviewEntity reviewEntity = service.createProductReview(id, review);
+        if (reviewEntity != null) {
+            return Response.status(Response.Status.ACCEPTED).entity(reviewEntity.getId()).build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).entity(reviewEntity.getId()).build();
     }
 
 }

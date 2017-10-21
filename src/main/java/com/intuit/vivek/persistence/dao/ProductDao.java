@@ -1,9 +1,12 @@
 package com.intuit.vivek.persistence.dao;
 
 import com.intuit.vivek.persistence.model.ProductEntity;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
 /**
@@ -19,5 +22,9 @@ public interface ProductDao extends CrudRepository<ProductEntity, Integer> {
 
     @Query("select p from ProductEntity p")
     List<ProductEntity> findAll();
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select p from ProductEntity p where p.id = :id")
+    ProductEntity findOneForUpdate(@Param("id") int id);
 
 }

@@ -14,7 +14,6 @@ import javax.ws.rs.core.Response;
 public class StatusResource {
 
     @GET
-    @Path("/")
     public Response status() {
         return Response.ok("Status Fine").build();
     }
