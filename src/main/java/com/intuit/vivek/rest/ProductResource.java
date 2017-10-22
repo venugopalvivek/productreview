@@ -6,6 +6,10 @@ import com.intuit.vivek.persistence.model.ReviewEntity;
 import com.intuit.vivek.rest.dto.PostReviewDto;
 import com.intuit.vivek.rest.dto.ReviewDto;
 import com.intuit.vivek.services.ProductService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +24,7 @@ import java.util.List;
 @Component
 @Path("/products")
 @Produces(MediaType.APPLICATION_JSON)
+@Api(value = "/products", description = "Products api")
 public class ProductResource {
 
     private ProductService service;
@@ -30,6 +35,10 @@ public class ProductResource {
     }
 
     @GET
+    @ApiOperation(value = "Get all products",
+                    response = ProductEntity.class,
+                    responseContainer = "List")
+    @ApiResponses(value = {@ApiResponse(code = 400, message = "Invalid score")})
     public Response getAllProducts(@QueryParam("score") Integer totalScore) throws ProductReviewException {
         List<ProductEntity> products = null;
         if (totalScore != null) {
@@ -42,6 +51,9 @@ public class ProductResource {
 
     @GET
     @Path("/{id}")
+    @ApiOperation(value = "Find product by id",
+                    response = ProductEntity.class)
+    @ApiResponses(value = {@ApiResponse(code = 404, message = "Product not found")})
     public Response getProduct(@PathParam("id") int id) throws ProductReviewException {
         ProductEntity product = service.getProduct(id);
         return Response.status(Response.Status.OK).entity(product).build();
@@ -49,6 +61,11 @@ public class ProductResource {
 
     @GET
     @Path("/{id}/reviews")
+    @ApiOperation(value = "Find reviews of given product id",
+            response = ReviewDto.class,
+            responseContainer = "List")
+    @ApiResponses(value = {@ApiResponse(code = 404, message = "Product not found"),
+                        @ApiResponse(code = 400, message = "Invalid score")})
     public Response getProductReviews(@PathParam("id") int id,
                                       @QueryParam("score") Integer score)
             throws ProductReviewException {
@@ -63,6 +80,12 @@ public class ProductResource {
 
     @POST
     @Path("/{id}/reviews")
+    @ApiOperation(value = "Add a new review for given product id",
+            response = ReviewDto.class,
+            responseContainer = "List")
+    @ApiResponses(value = {@ApiResponse(code = 404, message = "Product not found"),
+            @ApiResponse(code = 400, message = "Invalid request"),
+            @ApiResponse(code = 409, message = "Review by reviewer already exists")})
     public Response postProductReview(@PathParam("id") int id, PostReviewDto review) throws ProductReviewException {
         ReviewEntity reviewEntity = service.createProductReview(id, review);
         if (reviewEntity != null) {
