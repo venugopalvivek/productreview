@@ -48,8 +48,8 @@ public class ProductServiceTest {
         products.add(product1);
 
         ProductEntity product2 = new ProductEntity();
-        product2.setId(1);
-        product2.setName("Pen");
+        product2.setId(2);
+        product2.setName("Book");
         product2.setReviewsCount(0);
         product2.setTotalScore(0.0);
         products.add(product2);

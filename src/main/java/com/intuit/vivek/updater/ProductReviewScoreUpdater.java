@@ -29,9 +29,7 @@ public class ProductReviewScoreUpdater {
     public void updateProductReviewScore() {
         List<ReviewEntity> reviews = reviewDao.findByStateTopN(ReviewState.PENDING, new PageRequest(0, 1));
         if (reviews != null && reviews.size() > 0) {
-            System.out.println("Updating Reviews");
             ReviewEntity review = reviews.get(0);
-            System.out.println("Updating Review " + review.getId());
             ProductEntity product = productDao.findOneForUpdate(review.getProductId());
 
             double newScore = (review.getScore() * 1.0) + (product.getTotalScore() * product.getReviewsCount());
