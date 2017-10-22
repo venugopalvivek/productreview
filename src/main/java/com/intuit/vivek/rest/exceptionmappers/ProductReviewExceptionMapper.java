@@ -4,10 +4,12 @@ import com.intuit.vivek.exceptions.ProductReviewException;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
 
 /**
  * Created by vvenugopal on 10/21/17.
  */
+@Provider
 public class ProductReviewExceptionMapper implements ExceptionMapper<ProductReviewException> {
 
     @Override
@@ -15,7 +17,8 @@ public class ProductReviewExceptionMapper implements ExceptionMapper<ProductRevi
         ExceptionResponse exceptionResponse = new ExceptionResponse();
         exceptionResponse.code = exception.getCode();
         exceptionResponse.message = exception.getMessage();
-        exceptionResponse.cause = exception.getCause().getMessage();
+        if (exception.getCause() != null)
+            exceptionResponse.cause = exception.getCause().getMessage();
 
         return Response.status(exception.getCode()).entity(exceptionResponse).build();
     }

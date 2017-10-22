@@ -20,8 +20,8 @@ import java.util.Properties;
 /**
  * Created by vvenugopal on 6/16/16.
  */
-@ComponentScan(basePackages = "com.intuit.vivek",
-        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = DbConfig.class)})
+//@ComponentScan(basePackages = "com.intuit.vivek",
+//        excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = DbConfig.class)})
 @Configuration
 @EnableJpaRepositories(basePackages = {"com.intuit.vivek.persistence.dao"})
 @EnableTransactionManagement
@@ -58,8 +58,12 @@ public class TestDbConfig {
 
     @Bean
     public DataSource getDataSource() {
-        JdbcDataSource dataSource = new JdbcDataSource();
-        dataSource.setUrl("jdbc:h2:~/intuit;MODE=MySQL;DB_CLOSE_DELAY=-1");
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(driverClass);
+        String jdbcUrl = dbUrl;
+        dataSource.setUrl(jdbcUrl);
+//        JdbcDataSource dataSource = new JdbcDataSource();
+//        dataSource.setUrl(dbUrl);
         return dataSource;
     }
 
@@ -69,7 +73,6 @@ public class TestDbConfig {
         flyway.setBaselineOnMigrate(true);
         flyway.setDataSource(getDataSource());
         flyway.setLocations(schemaLocation);
-        System.out.println("Created tables");
         return flyway;
     }
 
@@ -83,7 +86,7 @@ public class TestDbConfig {
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.dialect", hibernateDialect);
         jpaProperties.put("hibernate.hbm2ddl.auto", ddlAction);
-        jpaProperties.put("hibernate.id.new_generator_mappings", true);
+//        jpaProperties.put("hibernate.id.new_generator_mappings", true);
         jpaProperties.put("hibernate.show_sql", true);
         jpaProperties.put("hibernate.format_sql", true);
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
