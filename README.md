@@ -12,11 +12,12 @@ A Basic product review engine
 * review will be available in about 5 seconds after posting when it gets approved
 * documentation of apis available at http://localhost:8080/productreview/api/swagger.json
 
-## Limitations
-* cannot add a new product
-* no pagination on listing of products
-* no pagination on listing of reviews
+## Improvements
+* to add a new product
+* pagination on listing of products
+* pagination on listing of reviews
 * unit testing using H2 in-memory database
+* more unit tests
 
 ## Running
 * run gradle clean jettyRun
