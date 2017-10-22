@@ -18,4 +18,8 @@ A Basic product review engine
 * no pagination on listing of reviews
 * unit testing using H2 in-memory database
 
+## Running
+* run gradle clean jettyRun
+* will be available at http://localhost:8080/productreview/api/...
+
 

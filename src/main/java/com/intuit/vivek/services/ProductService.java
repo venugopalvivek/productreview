@@ -64,7 +64,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<ReviewDto> getProductReviews(int id, int score) throws ProductReviewException {
-        if (score < 0 || score > 5) {
+        if (score < 1 || score > 5) {
             throw new ProductReviewException(400, "Invalid score");
         }
         List<ReviewDto> reviews = new LinkedList<>();
