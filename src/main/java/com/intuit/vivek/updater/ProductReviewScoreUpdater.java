@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,6 +40,7 @@ public class ProductReviewScoreUpdater {
             productDao.save(product);
 
             review.setState(ReviewState.APPROVED);
+            review.setModifiedAt(new Date());
             reviewDao.save(review);
         }
     }

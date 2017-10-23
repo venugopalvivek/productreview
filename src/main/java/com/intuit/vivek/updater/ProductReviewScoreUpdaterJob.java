@@ -42,10 +42,10 @@ public class ProductReviewScoreUpdaterJob {
         @Override
         public void run() {
             logger.info("Running...");
-            sleep(5000); //initial delay
+            sleep(10000); //initial delay
             while(true) {
                 updater.updateProductReviewScore();
-                sleep(5000); // interval
+                sleep(10000); // interval
                 logger.info("Continuing...");
             }
         }
