@@ -13,9 +13,9 @@ A Basic product review engine
 
 ## Running
 * change the application.properties file to change the following properties
-** db.url=jdbc:mysql://<host>:<port>/intuit
-** db.username=<username>
-** db.password=<password>
+ * db.url=jdbc:mysql://<host>:<port>/intuit
+ * db.username=<username>
+ * db.password=<password>
 * run gradle clean jettyRun
 * will be available at http://localhost:8080/productreview/api/...
 * documentation of apis available at http://localhost:8080/productreview/api/swagger.json
