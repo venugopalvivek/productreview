@@ -100,12 +100,45 @@ public class ProductServiceTest {
     }
 
     @Test(expected = ProductReviewException.class)
+    public void testPostReviewInvalidScore() throws Exception {
+        Mockito.when(productDao.findOne(Matchers.anyInt())).thenReturn(getProducts().get(0));
+        PostReviewDto review = new PostReviewDto();
+        review.setScore(0);
+        review.setComments("Nice pen");
+        review.setReviewerName("Vivek");
+        review.setReviewerEmail("abc@gmail.com");
+        service.createProductReview(1, review);
+    }
+
+    @Test(expected = ProductReviewException.class)
+    public void testPostReviewInvalidScore2() throws Exception {
+        Mockito.when(productDao.findOne(Matchers.anyInt())).thenReturn(getProducts().get(0));
+        PostReviewDto review = new PostReviewDto();
+        review.setScore(6);
+        review.setComments("Nice pen");
+        review.setReviewerName("Vivek");
+        review.setReviewerEmail("abc@gmail.com");
+        service.createProductReview(1, review);
+    }
+
+    @Test(expected = ProductReviewException.class)
     public void testPostReviewNonExistingProduct() throws Exception {
         PostReviewDto review = new PostReviewDto();
         review.setScore(3);
         review.setComments("Nice pen");
         review.setReviewerName("Vivek");
         review.setReviewerEmail("abc@gmail.com");
+        service.createProductReview(1, review);
+    }
+
+    @Test(expected = ProductReviewException.class)
+    public void testPostReviewInvalidEmail() throws Exception {
+        Mockito.when(productDao.findOne(Matchers.anyInt())).thenReturn(getProducts().get(0));
+        PostReviewDto review = new PostReviewDto();
+        review.setScore(3);
+        review.setComments("Nice pen");
+        review.setReviewerName("Vivek");
+        review.setReviewerEmail("abc");
         service.createProductReview(1, review);
     }
 
